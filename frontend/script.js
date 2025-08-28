@@ -11,6 +11,9 @@ let client;
 let clientReady = false;
 let currentImageUrl = "";
 
+// Negative prompt for better human/living being quality
+const NEGATIVE_PROMPT = "don't generate deformed, blurry, extra limbs, extra fingers, missing fingers, bad hands, bad eyes, mutated hands, mutated face, poorly drawn face, poorly drawn hands, disfigured, low quality, bad anatomy, wrong anatomy, ugly, distorted, watermark, text";
+
 // Connect once
 (async () => {
   try {
@@ -32,11 +35,14 @@ generateBtn.addEventListener("click", async () => {
     return;
   }
 
-  const prompt = promptInput.value.trim();
-  if (!prompt) {
+  const userPrompt = promptInput.value.trim();
+  if (!userPrompt) {
     statusText.textContent = "⚠️ Please enter a prompt!";
     return;
   }
+
+  // Append negative prompt
+  const prompt = `${userPrompt}\nNegative prompt: ${NEGATIVE_PROMPT}`;
 
   statusText.textContent = "⏳ Generating image...";
   generateBtn.disabled = true;
